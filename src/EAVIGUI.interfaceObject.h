@@ -32,6 +32,10 @@
 #include <list>
 #include <map>
 
+#define GUIDEGBUG = true
+
+
+
 namespace EAVIGUI {
 
     class InterfaceObject;
@@ -139,7 +143,7 @@ namespace EAVIGUI {
         int fadeTime;
         int fadeInTimeStamp, fadeOutTimeStamp;
         
-        void setScale(float newScale);
+        virtual void setScale(float newScale);
         void setAnchorPoint(float ax, float ay);
         void getAnchorPoint(float &ax, float &ay);
 
@@ -163,6 +167,7 @@ namespace EAVIGUI {
         void enableExternalTouchUp(bool val);
         virtual void touchMovingToExternal(ofTouchEventArgs &touch);
         virtual bool enableAlphaWhenDrawing();
+        bool isDebug;
 
     protected:
         InterfaceObject();
@@ -204,6 +209,7 @@ namespace EAVIGUI {
         
         list<int> touches;
         bool isTouched;
+
         
         bool draggable;
         ofPoint dragPoint;

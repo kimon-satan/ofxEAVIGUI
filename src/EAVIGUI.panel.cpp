@@ -55,7 +55,7 @@ namespace EAVIGUI {
     }
     
     void Panel::drawToBuffer() {
-        ofEnableSmoothing();
+        //ofEnableSmoothing();
         ofFill();
         ofSetColor(colour);
         roundedRect(1,1, w-1, h-1, cornerRadius);

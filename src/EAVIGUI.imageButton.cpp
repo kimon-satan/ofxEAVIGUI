@@ -64,7 +64,7 @@ namespace EAVIGUI {
 
  
     void ImageButton::drawToBuffer() {
-        ofEnableAlphaBlending();
+        //ofEnableAlphaBlending();
         ofSetColor(imColor);
         if (!isEnabled() && hasDisabledIm) {
             disabledIm.draw(0,0,w,h);

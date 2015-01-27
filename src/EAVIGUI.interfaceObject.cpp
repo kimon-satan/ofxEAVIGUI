@@ -89,6 +89,7 @@ namespace EAVIGUI {
         touchAndHoldEnabled = false;
         exitGestureStartIdx = 0;
         externalTouchUp = false;
+        isDebug = false;
     }
     
     InterfaceObject::~InterfaceObject() {
@@ -115,6 +116,7 @@ namespace EAVIGUI {
         settings.useStencil		= false;
         tex = new ofFbo();
         tex->allocate(settings);
+
         allocated = true;
         invalidated = true;
     }
@@ -122,6 +124,7 @@ namespace EAVIGUI {
     void InterfaceObject::deallocateFBO() {
         allocated = false;
         delete tex;
+        tex = NULL;
     }
     
     void InterfaceObject::update(){
@@ -171,9 +174,9 @@ namespace EAVIGUI {
             if (invalidated || effectInvalidated) {
                 invalidated = false;
                 tex->begin();
-                ofEnableAlphaBlending();
+                ofDisableAlphaBlending();
                 ofClear(255);
-                ofBackground(0,0);
+                ofBackground(255,0);
 
                 drawToBuffer();
                 
@@ -186,6 +189,7 @@ namespace EAVIGUI {
 //                    ofFill();
 //                    ofRect(0,0,w,h);
 //                }
+
                 tex->end();
                 postDrawToBuffer();
             }
@@ -240,10 +244,11 @@ namespace EAVIGUI {
                 }
 
                 if (enableAlphaWhenDrawing()) {
-                    ofEnableAlphaBlending();
+                   ofEnableAlphaBlending();
                 }else{
                     ofDisableAlphaBlending();
                 }
+   
                 //#ifndef TARGET_OPENGLES
 //				glBlendEquation(GL_FUNC_ADD);
 //#endif
@@ -253,22 +258,22 @@ namespace EAVIGUI {
 //                glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
                 tex->draw(0, 0, fboWidth * totalScale, fboHeight *totalScale);
                 
-#ifdef GUIDEGBUG
-                //undo rotation for debug rects
-                glTranslatef(getScaledWidth()/2.0, getScaledHeight()/2.0,0);
-                glRotatef(-rotation, 0, 0, 1);
-                glTranslatef(-getScaledWidth()/2.0, -getScaledHeight()/2.0,0);
-                ofNoFill();
-                ofSetColor(255,0,0,255);
-                ofRect(0, 0, fboWidth * totalScale, fboHeight *totalScale);
-                ofSetColor(100,100,100,255);
-                ofRect(0, 0, w * totalScale, h *totalScale);
-                if (rotation != 0) {
-                    //expanded area to capture touch on rotated FBOs
-                    ofSetColor(0,255,0,255);
-                    ofRect(-(rotatedSize - w)/2.0 * totalScale, -(rotatedSize - h) /2.0 * totalScale, rotatedSize * totalScale, rotatedSize * totalScale);
+                if(isDebug){
+                    //undo rotation for debug rects
+                    glTranslatef(getScaledWidth()/2.0, getScaledHeight()/2.0,0);
+                    //ofRotate(rotation/4.0, 0, 0, 1);
+                    glTranslatef(-getScaledWidth()/2.0, -getScaledHeight()/2.0,0);
+                    ofNoFill();
+                    ofSetColor(255,0,0,255);
+                    //ofRect(0, 0, fboWidth * totalScale, fboHeight *totalScale);
+                    ofSetColor(100,100,100,255);
+                    ofRect(0, 0, w * totalScale, h *totalScale);
+                    if (rotation != 0) {
+                        //expanded area to capture touch on rotated FBOs
+                        ofSetColor(0,0,255,255);
+                        ofRect(-(rotatedSize - w)/2.0 * totalScale, -(rotatedSize - h) /2.0 * totalScale, rotatedSize * totalScale, rotatedSize * totalScale);
+                    }
                 }
-#endif            
                 glPopMatrix();
                 
                 for(int i=0; i < children.size(); i++) {
@@ -487,9 +492,13 @@ namespace EAVIGUI {
     void InterfaceObject::touchUp(ofTouchEventArgs &touch) {
         touches.remove(touch.id);
         isTouched = touches.size() > 0;
+        cout << "iobj touchup " << isTouched << "... ";
         if (!touchAndHoldEnabled || (touchAndHoldEnabled && !touchAndHoldSent)) {
+            cout << "touch callback sent";
             sendTouchCallback(InterfaceObject::TOUCHUP, touch);
+            
         }
+        cout << endl;
     }
     
     void InterfaceObject::touchCancelled(ofTouchEventArgs &touch) {

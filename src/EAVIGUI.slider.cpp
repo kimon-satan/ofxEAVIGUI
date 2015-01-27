@@ -86,6 +86,7 @@ namespace EAVIGUI {
             moveSlider(touch);
         }
     }
+
   
     void Slider::moveSlider(ofTouchEventArgs &touch) {
         bool validMove = false;

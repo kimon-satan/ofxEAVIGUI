@@ -91,6 +91,7 @@ namespace EAVIGUI {
 
     void InterfaceManager::draw() {
         for(int i=0; i < intObjs.size(); i++) {
+
             if (intObjs[i]->getParent() == NULL) {
                 intObjs[i]->draw();
             }
@@ -156,7 +157,7 @@ namespace EAVIGUI {
     void InterfaceManager::mouseDragged(int x, int y, int button){
         if (redirectMouseToTouch) {
             ofTouchEventArgs touch = createTouch(x, y);
-            InterfaceManager::touchDown(touch);
+            InterfaceManager::touchMoved(touch);
         }else{
             if (NULL == InterfaceManager::draggingTarget) {
                 vector<InterfaceObject*>* liveObjectList = InterfaceManager::getLiveObjectList();
