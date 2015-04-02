@@ -90,6 +90,7 @@ namespace EAVIGUI {
         exitGestureStartIdx = 0;
         externalTouchUp = false;
         isDebug = false;
+        isForeground = false;
     }
     
     InterfaceObject::~InterfaceObject() {
@@ -402,10 +403,20 @@ namespace EAVIGUI {
                 fadeOutTimeStamp = -1;
             }
         }
+        
+        
     }
     
     bool InterfaceObject::isVisible() {
         return visible;
+    }
+    
+    bool InterfaceObject::getIsForeground(){
+        return isForeground;
+    }
+    
+    void InterfaceObject::setIsForeground(bool b){
+        isForeground = b;
     }
     
     InterfaceObject* InterfaceObject::getParent() {

@@ -92,7 +92,7 @@ namespace EAVIGUI {
     void InterfaceManager::draw() {
         for(int i=0; i < intObjs.size(); i++) {
 
-            if (intObjs[i]->getParent() == NULL) {
+            if (intObjs[i]->getParent() == NULL && !intObjs[i]->getIsForeground()) {
                 intObjs[i]->draw();
             }
         }	
@@ -105,6 +105,17 @@ namespace EAVIGUI {
                 break;
             }
         }
+    }
+    
+    void InterfaceManager::drawForeground(){
+        
+        for(int i=0; i < intObjs.size(); i++) {
+            
+            if (intObjs[i]->getParent() == NULL && intObjs[i]->getIsForeground()) {
+                intObjs[i]->draw();
+            }
+        }
+        
     }
 
     vector<InterfaceObject*>* InterfaceManager::getLiveObjectList() {
@@ -226,6 +237,12 @@ namespace EAVIGUI {
             if (liveObjectList->at(i)->isEnabled() && liveObjectList->at(i)->isInteractive() && liveObjectList->at(i)->isVisible() &&
                 geom::pointInRect(touch.x,touch.y,rotatedRect.x, rotatedRect.y, rotatedRect.width-1, rotatedRect.height-1))
             {
+                
+                if(liveObjectList->at(i)->getParent() != NULL){
+                    if(!liveObjectList->at(i)->getParent()->isVisible()){
+                        continue;
+                    }
+                }
 //                cout << touch.x << ", " << touch.y << ", " << rotatedRect.x << ", " << rotatedRect.y << ", " <<  rotatedRect.width << ", " << rotatedRect.height << endl;
                 //convert from screen coordinate system to object coordinate system
                 ofTouchEventArgs tempTouch = touch;
@@ -493,7 +510,8 @@ namespace EAVIGUI {
 
 
     void eventProxy::draw(ofEventArgs &data) {
-        InterfaceManager::draw();
+        //this allows me to draw on top or underneath of the interface
+        //InterfaceManager::draw();
     }
 
     void eventProxy::update(ofEventArgs &data) {

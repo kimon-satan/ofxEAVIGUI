@@ -74,6 +74,7 @@ namespace EAVIGUI {
         static InterfaceObject* lastObject();
         static void setup();
         static void draw();
+        static void drawForeground();
         static void update();
         static void exit();
         static void mouseMoved(int x, int y);

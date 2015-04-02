@@ -104,6 +104,8 @@ namespace EAVIGUI {
         virtual void setVisible(bool val, bool noFade = false);
         bool isVisible();
         bool isInteractive();
+        bool getIsForeground();
+        void setIsForeground(bool b);
         void setIsInteractive(bool val) {interactive = val;}
         InterfaceObject* getParent();
         void setParent(InterfaceObject* newParent);
@@ -219,6 +221,7 @@ namespace EAVIGUI {
         bool touchAndHoldEnabled;
         int exitGestureStartIdx;
         bool wasEnabled;
+        bool isForeground;
         
     private:
         void show();
