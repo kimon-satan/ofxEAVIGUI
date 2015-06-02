@@ -22,15 +22,24 @@ namespace EAVIGUI {
         RangeSlider(InterfaceListener *_listener, int _id, int _x, int _y, int _w, int _h, ofTrueTypeFont *_font, string _text, ofColor _textcolour, ofColor _backgroundColour, ofColor sliderColour);
         
         void drawToBuffer();
-        void drawAdjuster(int x, int y, int _w, int _h);
+        void drawAdjuster(int x, int y, int _w, int _h, ofColor c);
         void touchDown(ofTouchEventArgs &touch);
         void touchMoved(ofTouchEventArgs &touch);
+        void touchUp(ofTouchEventArgs &touch);
+        
+        void setNormalisedValue(float f);
+        float getNormalisedValue();
+        void setClampedValue(float f);
+        float getClampedValue();
+        float getMinLim();
+        float getMaxLim();
+
 
     protected:
         
         float mMinLim, mMaxLim, mRange;
         ofRectangle mMinTab, mMaxTab, mSlideBar;
-        bool mMinAdj;
+        bool mMinAdj, mMaxAdj;
     };
     
 }

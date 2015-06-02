@@ -15,16 +15,18 @@ namespace EAVIGUI {
     : Slider(_listener, _id, _x, _y, _w, _h, _font, _text, _textcolour, _backgroundColour, _sliderColour) {
 
      
-        mMinLim = 0.2;
-        mMaxLim = 0.8;
+        mMinLim = 0;
+        mMaxLim = 1.0;
         mRange = mMaxLim - mMinLim;
         
-        int slw = (w - 10);
-        mMinTab.set(1 + slw * mMinLim, h * 0.7 , 8, h * 0.3);
-        mMaxTab.set(1 + slw * mMaxLim, h * 0.7 , 8, h * 0.3);
-        mSlideBar.set(5, 0, slw, h *0.3);
+        mSlideBar.set(5, 0, w - 10, h * 0.7);
+        
+        mMinTab.set(5 - 6, h * 0.7, 12, h * 0.3);
+        mMaxTab.set(mSlideBar.x + mSlideBar.width - 6, h * 0.7, 12, h * 0.3);
+       
         
         mMinAdj = false;
+        mMaxAdj = false;
         
     }
     
@@ -38,18 +40,26 @@ namespace EAVIGUI {
         int slw = (w - 10);
         
         ofSetColor(sliderColour);
-        ofRect(5 + slw * mMinLim ,0, slw * mRange * value, h * 0.7);
+        float lp = mMinTab.x + mMinTab.width/2;
+        ofRect(lp ,0, (mSlideBar.width * value) - lp + 5, h * 0.7);
         ofSetColor(255);
-        drawAdjuster(5 + slw * mMinLim, h * 0.7 , 4, h * 0.3);
-        drawAdjuster(5 + slw * mMaxLim, h * 0.7 , 4, h * 0.3);
+        drawAdjuster(lp, h * 0.7 , 4, h * 0.3, ofColor(255,0,0));
+        drawAdjuster(mMaxTab.x + mMaxTab.width/2, h * 0.7 , 4, h * 0.3, ofColor(0,255,0));
 
         ofSetColor(colour);
         font->drawString(text, 5, font->getLineHeight());
         ofPopStyle();
+        
+        /*ofNoFill();
+        ofSetColor(255);
+        ofRect(mMinTab);
+        ofRect(mMaxTab);*/
     }
     
-    void RangeSlider::drawAdjuster(int x, int y, int _w, int _h){
+    void RangeSlider::drawAdjuster(int x, int y, int _w, int _h, ofColor c){
         
+        ofPushStyle();
+        ofSetColor(c);
         ofPushMatrix();
             ofTranslate(x, y);
             ofBeginShape();
@@ -60,20 +70,29 @@ namespace EAVIGUI {
                 ofVertex(-_w/2,_h);
             ofEndShape(true);
         ofPopMatrix();
+        ofPopStyle();
         
     }
     
     void RangeSlider::touchDown(ofTouchEventArgs &touch) {
         
-            touchTarget = touch.id;
+        touchTarget = touch.id;
         
         if(mSlideBar.inside(touch.x, touch.y)){
-            moveSlider(touch);
-            Label::touchDown(touch);
-        }else if(mMinTab.inside(touch.x, touch.y)){
-            mMinLim = (touch.x+5)/(w-10);
+            
+            float v = (touch.x-5)/mSlideBar.width;
+            value = ofClamp(v, mMinLim, mMaxLim);
             invalidate();
+            
+        }else if(mMinTab.inside(touch.x, touch.y)){
+
             mMinAdj = true;
+            mMaxAdj = false;
+            
+        }else if(mMaxTab.inside(touch.x, touch.y)){
+
+            mMinAdj = false;
+            mMaxAdj = true;
         }
         
         
@@ -84,15 +103,72 @@ namespace EAVIGUI {
         if (touch.id == touchTarget) {
             
             if(mSlideBar.inside(touch.x, touch.y)){
-                cout << touch.x << "," << touch.y << endl;
-                Label::touchMoved(touch);
-                moveSlider(touch);
+            
+                value = (touch.x-5)/mSlideBar.width;
+                
             }else if(mMinAdj){
-                mMinLim = (touch.x+5)/(w-10);
-                invalidate();
+                
+                float v = touch.x;
+                v = ofClamp(v, 5.0f, w - 5.0f);
+                v = min(mMaxTab.x - 10, v);
+                mMinLim = (v-5)/mSlideBar.width;
+                mMinTab.x = v - mMinTab.width/2;
+                mRange = mMaxLim - mMinLim;
+         
+                
+            }else if(mMaxAdj){
+                
+                float v = touch.x;
+                v = ofClamp(v, 5.0f, w - 5.0f);
+                v = max(mMinTab.x + mMinTab.width/2 + 10, v);
+                mMaxLim = (v-5)/mSlideBar.width;
+                mMaxTab.x = v - mMaxTab.width/2;
+                mRange = mMaxLim - mMinLim;
+
             }
+            
+            
+            value = ofClamp(value, mMinLim, mMaxLim);
+            invalidate();
 
         }
+        
     }
+    
+    void RangeSlider::touchUp(ofTouchEventArgs &touch){
+        
+        
+        //Slider::touchUp(touch);
+        touchTarget = -1;
+        mMinAdj = false;
+        mMaxAdj = false;
+        invalidate();
+        
+    }
+    
+    void RangeSlider::setNormalisedValue(float f)
+    {
+        value = ofMap(f, 0.0f,1.0f, mMinLim, mMaxLim);
+    }
+    
+    float RangeSlider::getNormalisedValue()
+    {
+        return ofMap(value, mMinLim, mMaxLim, 0.0f, 1.0f);
+    }
+    
+    void RangeSlider::setClampedValue(float f)
+    {
+        value = ofClamp(f, mMinLim, mMaxLim);
+    }
+    
+    float RangeSlider::getClampedValue()
+    {
+        return value;
+    }
+    
+    float RangeSlider::getMinLim(){return mMinLim;}
+    float RangeSlider::getMaxLim(){return mMaxLim;}
+    
+ 
     
 }
