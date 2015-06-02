@@ -30,6 +30,7 @@ namespace EAVIGUI {
     
     void MultiImageButton::drawToBuffer() {
         if (isEnabled()) {
+            ofSetColor(255);
             states[currentState].draw(0,0,w,h);
             if (isTouched) {
                 touchStates[currentTouchState].draw(0,0,w,h);

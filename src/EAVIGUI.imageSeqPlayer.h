@@ -28,7 +28,7 @@ namespace EAVIGUI {
         void setBackgroundColor(ofColor newCol) {backgroundColor = newCol; invalidate();}
         bool enableAlphaWhenDrawing();
     protected:
-        void drawToBuffer();
+        virtual void drawToBuffer();
         ImageSequence *imSeq;
         int framePeriod;
         long lastFrameTS;
