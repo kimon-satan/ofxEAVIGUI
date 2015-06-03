@@ -47,7 +47,8 @@
 #if OF_VERSION_MINOR == 8
 #include "ofxIOSAlerts.h"
 #else
-#include "ofxiPhoneAlerts.h"
+#include "ofxIOSAlerts.h"
+//#include "ofxiPhoneAlerts.h"
 #endif
 #endif
 

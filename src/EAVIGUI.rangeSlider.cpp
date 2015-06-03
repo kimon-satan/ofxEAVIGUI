@@ -102,9 +102,12 @@ namespace EAVIGUI {
         
         if (touch.id == touchTarget) {
             
+            Label::touchMoved(touch);
+            
             if(mSlideBar.inside(touch.x, touch.y)){
             
                 value = (touch.x-5)/mSlideBar.width;
+
                 
             }else if(mMinAdj){
                 
@@ -114,7 +117,7 @@ namespace EAVIGUI {
                 mMinLim = (v-5)/mSlideBar.width;
                 mMinTab.x = v - mMinTab.width/2;
                 mRange = mMaxLim - mMinLim;
-         
+
                 
             }else if(mMaxAdj){
                 
@@ -149,6 +152,7 @@ namespace EAVIGUI {
     void RangeSlider::setNormalisedValue(float f)
     {
         value = ofMap(f, 0.0f,1.0f, mMinLim, mMaxLim);
+        invalidate();
     }
     
     float RangeSlider::getNormalisedValue()
@@ -159,6 +163,7 @@ namespace EAVIGUI {
     void RangeSlider::setClampedValue(float f)
     {
         value = ofClamp(f, mMinLim, mMaxLim);
+        invalidate();
     }
     
     float RangeSlider::getClampedValue()
