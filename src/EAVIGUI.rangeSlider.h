@@ -33,6 +33,8 @@ namespace EAVIGUI {
         float getClampedValue();
         float getMinLim();
         float getMaxLim();
+        void setMinLim(float f);
+        void setMaxLim(float f);
 
 
     protected:

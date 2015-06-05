@@ -41,7 +41,7 @@ namespace EAVIGUI {
         enum textVerticalJustifyOptions {JUSTIFYTOP, JUSTIFYCENTERV, JUSTIFYBOTTOM};
         Label(InterfaceListener *_listener, int _id, int _x, int _y, int _w, int _h, ofTrueTypeFont *_font, string _text, ofColor _colour);
         void setText(string t);
-        void fitToText();
+        virtual void fitToText();
         void setColour(ofColor col);
         void setBackgroundColour(ofColor col);
         void setTouchDownColour(ofColor col);

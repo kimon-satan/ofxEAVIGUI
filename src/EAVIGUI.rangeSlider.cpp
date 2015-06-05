@@ -157,7 +157,7 @@ namespace EAVIGUI {
     
     float RangeSlider::getNormalisedValue()
     {
-        return ofMap(value, mMinLim, mMaxLim, 0.0f, 1.0f);
+        return ofMap(value, mMinLim, mMaxLim, 0.0f, 1.0f, true);
     }
     
     void RangeSlider::setClampedValue(float f)
@@ -173,6 +173,19 @@ namespace EAVIGUI {
     
     float RangeSlider::getMinLim(){return mMinLim;}
     float RangeSlider::getMaxLim(){return mMaxLim;}
+    
+    void RangeSlider::setMinLim(float f){
+        mMinLim = f;
+        mRange = mMaxLim - mMinLim;
+        mMinTab.x = f * mSlideBar.width - mMaxTab.width/2 + 5;
+        invalidate();
+    }
+    void RangeSlider::setMaxLim(float f){
+        mMaxLim = f;
+        mRange = mMaxLim - mMinLim;
+        mMaxTab.x = f * mSlideBar.width - mMaxTab.width/2 + 5;
+        invalidate();
+    }
     
  
     
