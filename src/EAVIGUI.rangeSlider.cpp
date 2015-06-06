@@ -28,6 +28,9 @@ namespace EAVIGUI {
         mMinAdj = false;
         mMaxAdj = false;
         
+        maxCol = ofColor::orangeRed;
+        minCol = ofColor::skyBlue;
+        
     }
     
     void RangeSlider::drawToBuffer() {
@@ -43,8 +46,8 @@ namespace EAVIGUI {
         float lp = mMinTab.x + mMinTab.width/2;
         ofRect(lp ,0, (mSlideBar.width * value) - lp + 5, h * 0.7);
         ofSetColor(255);
-        drawAdjuster(lp, h * 0.7 , 4, h * 0.3, ofColor(255,0,0));
-        drawAdjuster(mMaxTab.x + mMaxTab.width/2, h * 0.7 , 4, h * 0.3, ofColor(0,255,0));
+        drawAdjuster(lp, h * 0.7 , 4, h * 0.3, minCol);
+        drawAdjuster(mMaxTab.x + mMaxTab.width/2, h * 0.7 , 4, h * 0.3, maxCol);
 
         ofSetColor(colour);
         font->drawString(text, 5, font->getLineHeight());
@@ -185,6 +188,11 @@ namespace EAVIGUI {
         mRange = mMaxLim - mMinLim;
         mMaxTab.x = f * mSlideBar.width - mMaxTab.width/2 + 5;
         invalidate();
+    }
+    
+    void RangeSlider::setAdjusterColours(ofColor _min , ofColor _max){
+        minCol = _min;
+        maxCol = _max;
     }
     
  

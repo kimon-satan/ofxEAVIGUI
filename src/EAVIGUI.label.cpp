@@ -84,7 +84,7 @@ namespace EAVIGUI {
             default:
                 break;
         }
-        font->drawString(text, textleft, textTop);
+        if(text.length() > 0)font->drawString(text, textleft, textTop);
         
     }
 

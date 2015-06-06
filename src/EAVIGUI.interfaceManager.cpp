@@ -90,12 +90,13 @@ namespace EAVIGUI {
     }
 
     void InterfaceManager::draw() {
+        
+        
         for(int i=0; i < intObjs.size(); i++) {
-
             if (intObjs[i]->getParent() == NULL && !intObjs[i]->getIsForeground()) {
                 intObjs[i]->draw();
             }
-        }	
+        }
         for(int i=0; i < panels.size(); i++) {
             if (panels[i]->isVisible()) {
                 ofSetColor(200, 200, 200, 200);

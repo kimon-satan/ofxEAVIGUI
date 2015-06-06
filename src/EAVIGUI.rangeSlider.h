@@ -26,6 +26,8 @@ namespace EAVIGUI {
         void touchDown(ofTouchEventArgs &touch);
         void touchMoved(ofTouchEventArgs &touch);
         void touchUp(ofTouchEventArgs &touch);
+        void setAdjusterColours(ofColor _min , ofColor _max);
+        
         
         void setNormalisedValue(float f);
         float getNormalisedValue();
@@ -42,6 +44,7 @@ namespace EAVIGUI {
         float mMinLim, mMaxLim, mRange;
         ofRectangle mMinTab, mMaxTab, mSlideBar;
         bool mMinAdj, mMaxAdj;
+        ofColor minCol, maxCol;
     };
     
 }
